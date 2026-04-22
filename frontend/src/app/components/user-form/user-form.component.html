@@ -1,0 +1,45 @@
+<section class="panel">
+  <p class="kicker">Users</p>
+  <h2>Create a user</h2>
+
+  @if (store.error()) {
+    <p class="feedback error">{{ store.error() }}</p>
+  }
+
+  <form [formGroup]="userForm" (ngSubmit)="submit()" class="form">
+    <label for="name">Name</label>
+    <input
+      id="name"
+      formControlName="name"
+    />
+    @if (nameControl.invalid && (nameControl.dirty || nameControl.touched)) {
+      <p class="field-error">
+        @if (nameControl.errors?.['required'] || nameControl.errors?.['trimmedRequired']) {
+          Name is required.
+        } @else if (nameControl.errors?.['maxlength']) {
+          Name must be 120 characters or fewer.
+        }
+      </p>
+    }
+
+    <label for="email">Email</label>
+    <input
+      id="email"
+      formControlName="email"
+      type="email"
+    />
+    @if (emailControl.invalid && (emailControl.dirty || emailControl.touched)) {
+      <p class="field-error">
+        @if (emailControl.errors?.['required']) {
+          Email is required.
+        } @else if (emailControl.errors?.['email']) {
+          Enter a valid email address.
+        }
+      </p>
+    }
+
+    <button type="submit" [disabled]="store.isSubmitting() || userForm.invalid">
+      {{ store.isSubmitting() ? 'Saving...' : 'Create user' }}
+    </button>
+  </form>
+</section>

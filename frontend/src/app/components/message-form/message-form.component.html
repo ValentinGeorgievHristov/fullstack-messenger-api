@@ -1,0 +1,71 @@
+<section class="panel">
+  <p class="kicker">Messages</p>
+  <h2>Create a message</h2>
+
+  @if (senderUserId && receiverUserId) {
+    <p class="context">
+      Sending from user #{{ senderUserId }} to user #{{ receiverUserId }}
+    </p>
+  } @else {
+    <p class="context muted">Select a sender and a contact to start chatting.</p>
+  }
+
+  <form [formGroup]="messageForm" (ngSubmit)="submit()" class="form">
+    <label for="title">Title</label>
+    <input
+      id="title"
+      formControlName="title"
+    />
+    @if (titleControl.invalid && (titleControl.dirty || titleControl.touched)) {
+      <p class="field-error">
+        @if (titleControl.errors?.['required'] || titleControl.errors?.['trimmedRequired']) {
+          Title is required.
+        } @else if (titleControl.errors?.['maxlength']) {
+          Title must be 120 characters or fewer.
+        }
+      </p>
+    }
+
+    <label for="content">Content</label>
+    <textarea
+      id="content"
+      formControlName="content"
+      rows="6"
+    ></textarea>
+    @if (contentControl.invalid && (contentControl.dirty || contentControl.touched)) {
+      <p class="field-error">
+        Message content is required.
+      </p>
+    }
+
+    <label for="receiverUserId">Contact User ID</label>
+    <select
+      id="receiverUserId"
+      formControlName="receiverUserId"
+      [disabled]="!senderUserId || availableRecipients.length === 0"
+    >
+      <option [value]="0">Select contact</option>
+      @for (recipient of availableRecipients; track recipient.id) {
+        <option [value]="recipient.id">
+          {{ recipient.name }} ({{ recipient.id }})
+        </option>
+      }
+    </select>
+    @if (receiverControl.invalid && (receiverControl.dirty || receiverControl.touched)) {
+      <p class="field-error">
+        @if (receiverControl.errors?.['min']) {
+          Select a contact user.
+        }
+      </p>
+    }
+    @if (messageForm.errors?.['sameUser'] && (receiverControl.dirty || receiverControl.touched)) {
+      <p class="field-error">
+        Sender and receiver must be different users.
+      </p>
+    }
+
+    <button type="submit" [disabled]="isSubmitting || messageForm.invalid">
+      {{ isSubmitting ? 'Saving...' : 'Submit message' }}
+    </button>
+  </form>
+</section>

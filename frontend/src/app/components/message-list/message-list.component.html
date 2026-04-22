@@ -1,0 +1,32 @@
+<section class="panel">
+  <p class="kicker">Feed</p>
+  <h2>Saved messages</h2>
+
+  @if (isLoading) {
+    <p class="helper">Loading messages...</p>
+  } @else if (messages.length === 0) {
+    <p class="helper">No messages found yet.</p>
+  } @else {
+    <div class="message-list">
+      @for (message of messages; track message.id) {
+        <article class="message-card">
+          <div class="message-meta">
+            <div class="message-copy">
+              <strong>{{ message.title }}</strong>
+              <span>From #{{ message.senderUserId }} to #{{ message.receiverUserId }}</span>
+            </div>
+            <button
+              type="button"
+              class="icon-button"
+              aria-label="Delete message"
+              (click)="messageDelete.emit(message.id)"
+            >
+              ðŸ—‘
+            </button>
+          </div>
+          <p>{{ message.content }}</p>
+        </article>
+      }
+    </div>
+  }
+</section>
