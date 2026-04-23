@@ -38,6 +38,22 @@
       </p>
     }
 
+    <label for="password">Password</label>
+    <input
+      id="password"
+      formControlName="password"
+      type="password"
+    />
+    @if (passwordControl.invalid && (passwordControl.dirty || passwordControl.touched)) {
+      <p class="field-error">
+        @if (passwordControl.errors?.['required'] || passwordControl.errors?.['trimmedRequired']) {
+          Password is required.
+        } @else if (passwordControl.errors?.['minlength']) {
+          Password must be at least 6 characters.
+        }
+      </p>
+    }
+
     <button type="submit" [disabled]="store.isSubmitting() || userForm.invalid">
       {{ store.isSubmitting() ? 'Saving...' : 'Create user' }}
     </button>

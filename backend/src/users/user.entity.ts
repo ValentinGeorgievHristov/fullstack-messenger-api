@@ -11,4 +11,7 @@ export class UserEntity implements UserModel {
 
   @Column({ type: 'varchar', length: 160, unique: true })
   email!: string;
+
+  @Column({ type: 'varchar', length: 255, default: '' })
+  passwordHash!: string;
 }

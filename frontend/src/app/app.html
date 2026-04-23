@@ -3,18 +3,34 @@
     <p class="eyebrow">Angular 21 + NestJS + PostgreSQL</p>
     <h1>Demo Workspace</h1>
     <p class="intro">
-      Create users, submit messages, and load the message feed from the backend API.
+      Register, sign in, create users, and exchange messages through the protected backend API.
     </p>
+
+    <div class="hero-actions">
+      @if (authStore.currentUser(); as user) {
+        <div class="session-pill">
+          <strong>{{ user.name }}</strong>
+          <span>{{ user.email }}</span>
+        </div>
+        <button type="button" class="logout-button" (click)="logout()">
+          Sign out
+        </button>
+      } @else {
+        <a routerLink="/auth" class="auth-link">Authentication</a>
+      }
+    </div>
   </section>
 
-  <nav class="tabs">
-    <a routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      Users
-    </a>
-    <a routerLink="/messages" routerLinkActive="active">
-      Messages
-    </a>
-  </nav>
+  @if (authStore.currentUser()) {
+    <nav class="tabs">
+      <a routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Users
+      </a>
+      <a routerLink="/messages" routerLinkActive="active">
+        Messages
+      </a>
+    </nav>
+  }
 
   <router-outlet />
 </main>

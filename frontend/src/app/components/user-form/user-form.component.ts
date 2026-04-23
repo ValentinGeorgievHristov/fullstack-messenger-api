@@ -16,6 +16,7 @@ export class UserFormComponent {
   protected readonly userForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(120), trimmedRequiredValidator()]],
     email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6), trimmedRequiredValidator()]],
   });
 
   protected get nameControl() {
@@ -26,18 +27,23 @@ export class UserFormComponent {
     return this.userForm.controls.email;
   }
 
+  protected get passwordControl() {
+    return this.userForm.controls.password;
+  }
+
   protected submit(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       return;
     }
 
-    const { name, email } = this.userForm.getRawValue();
+    const { name, email, password } = this.userForm.getRawValue();
 
-    this.store.createUser({ name: name.trim(), email: email.trim() });
+    this.store.createUser({ name: name.trim(), email: email.trim(), password: password.trim() });
     this.userForm.reset({
       name: '',
       email: '',
+      password: '',
     });
   }
 }
