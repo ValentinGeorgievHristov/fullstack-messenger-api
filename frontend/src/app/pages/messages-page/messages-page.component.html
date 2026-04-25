@@ -1,0 +1,87 @@
+@if (error()) {
+  <section class="feedback error">{{ error() }}</section>
+}
+
+@if (userStore.users().length === 0) {
+  <section class="feedback">
+    Create users first, then come back here to start an internal chat.
+  </section>
+} @else {
+  <section class="messenger-shell">
+    <aside class="user-list">
+      <section class="selection-panel">
+        <p class="eyebrow">Choose Sender</p>
+        <p class="selection-copy">
+          Pick any existing user as the sender.
+        </p>
+        @if (selectedSender(); as sender) {
+          <div class="selected-sender-box">
+            <strong>{{ sender.name }}</strong>
+            <span>{{ sender.email }}</span>
+            <small>User ID: {{ sender.id }}</small>
+          </div>
+        }
+      </section>
+
+      @for (user of userStore.users(); track user.id) {
+        <button
+          type="button"
+          class="user-card"
+          [class.active]="selectedSenderId() === user.id"
+          (click)="selectSender(user.id)"
+        >
+          <strong>{{ user.name }}</strong>
+          <span>{{ user.email }}</span>
+          <small>User ID: {{ user.id }}</small>
+        </button>
+      }
+    </aside>
+
+    <section class="conversation-panel">
+      @if (selectedSender(); as sender) {
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Current Sender</p>
+            <h3>{{ sender.name }}</h3>
+            <p class="header-copy">{{ sender.email }} | User ID: {{ sender.id }}</p>
+          </div>
+        </header>
+
+        <section class="contacts-panel">
+          <p class="eyebrow">Contacts</p>
+          <p class="selection-copy">
+            Every existing user can send messages to every other existing user.
+          </p>
+          <div class="contact-list">
+            @for (user of availableRecipients(); track user.id) {
+              <button
+                type="button"
+                class="contact-chip"
+                [class.active]="selectedReceiverId() === user.id"
+                (click)="selectReceiver(user.id)"
+              >
+                {{ user.name }} (#{{ user.id }})
+              </button>
+            }
+          </div>
+        </section>
+
+        <section class="grid">
+          <app-message-form
+            [isSubmitting]="isSubmitting()"
+            [senderUserId]="sender.id"
+            [receiverUserId]="selectedReceiverId() ?? 0"
+            [availableRecipients]="availableRecipients()"
+            (messageSubmit)="createMessage($event)"
+          />
+
+          <app-message-list
+            [isLoading]="isLoading()"
+            [messages]="visibleMessages()"
+            (messageDelete)="deleteMessage($event)"
+          />
+        </section>
+      }
+    </section>
+  </section>
+}

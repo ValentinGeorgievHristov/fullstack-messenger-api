@@ -1,0 +1,94 @@
+<section class="auth-shell">
+  <section class="auth-panel">
+    <p class="eyebrow">Authentication</p>
+    <h2>Join the workspace</h2>
+    <p class="copy">
+      Create an account or sign in to manage users and internal messages.
+    </p>
+
+    <div class="mode-switch">
+      <button type="button" [class.active]="mode() === 'login'" (click)="setMode('login')">
+        Sign in
+      </button>
+      <button type="button" [class.active]="mode() === 'register'" (click)="setMode('register')">
+        Register
+      </button>
+    </div>
+
+    @if (authStore.error()) {
+      <p class="feedback error">{{ authStore.error() }}</p>
+    }
+
+    @if (mode() === 'register') {
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" class="form">
+        <label for="registerName">Name</label>
+        <input id="registerName" formControlName="name" />
+        @if (registerName.invalid && (registerName.dirty || registerName.touched)) {
+          <p class="field-error">
+            @if (registerName.errors?.['required'] || registerName.errors?.['trimmedRequired']) {
+              Name is required.
+            } @else if (registerName.errors?.['maxlength']) {
+              Name must be 120 characters or fewer.
+            }
+          </p>
+        }
+
+        <label for="registerEmail">Email</label>
+        <input id="registerEmail" formControlName="email" type="email" />
+        @if (registerEmail.invalid && (registerEmail.dirty || registerEmail.touched)) {
+          <p class="field-error">
+            @if (registerEmail.errors?.['required']) {
+              Email is required.
+            } @else if (registerEmail.errors?.['email']) {
+              Enter a valid email address.
+            }
+          </p>
+        }
+
+        <label for="registerPassword">Password</label>
+        <input id="registerPassword" formControlName="password" type="password" />
+        @if (registerPassword.invalid && (registerPassword.dirty || registerPassword.touched)) {
+          <p class="field-error">
+            @if (registerPassword.errors?.['required'] || registerPassword.errors?.['trimmedRequired']) {
+              Password is required.
+            } @else if (registerPassword.errors?.['minlength']) {
+              Password must be at least 6 characters.
+            }
+          </p>
+        }
+
+        <button type="submit" [disabled]="authStore.isSubmitting() || registerForm.invalid">
+          {{ authStore.isSubmitting() ? 'Creating...' : 'Create account' }}
+        </button>
+      </form>
+    } @else {
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" class="form">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" formControlName="email" type="email" />
+        @if (loginEmail.invalid && (loginEmail.dirty || loginEmail.touched)) {
+          <p class="field-error">
+            @if (loginEmail.errors?.['required']) {
+              Email is required.
+            } @else if (loginEmail.errors?.['email']) {
+              Enter a valid email address.
+            }
+          </p>
+        }
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" formControlName="password" type="password" />
+        @if (loginPassword.invalid && (loginPassword.dirty || loginPassword.touched)) {
+          <p class="field-error">
+            @if (loginPassword.errors?.['required'] || loginPassword.errors?.['trimmedRequired']) {
+              Password is required.
+            }
+          </p>
+        }
+
+        <button type="submit" [disabled]="authStore.isSubmitting() || loginForm.invalid">
+          {{ authStore.isSubmitting() ? 'Signing in...' : 'Sign in' }}
+        </button>
+      </form>
+    }
+  </section>
+</section>

@@ -1,0 +1,151 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.messenger-shell {
+  display: grid;
+  grid-template-columns: minmax(250px, 320px) 1fr;
+  gap: 18px;
+}
+
+.user-list {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  max-height: 720px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.selection-panel {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.selection-copy {
+  margin: 8px 0 0;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.selected-sender-box {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.72);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+}
+
+.selected-sender-box strong {
+  color: #f8fafc;
+}
+
+.selected-sender-box span,
+.selected-sender-box small {
+  color: #cbd5e1;
+}
+
+.user-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  text-align: left;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.user-card strong {
+  color: #f8fafc;
+}
+
+.user-card span,
+.user-card small {
+  color: #cbd5e1;
+}
+
+.user-card.active,
+.user-card:hover,
+.contact-chip.active,
+.contact-chip:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(15, 23, 42, 0.92);
+  transform: translateY(-1px);
+}
+
+.conversation-panel {
+  min-height: 520px;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(2, 6, 23, 0.56);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.panel-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.eyebrow {
+  margin: 0;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+
+.panel-header h3 {
+  margin: 8px 0 0;
+  color: #f8fafc;
+  font-size: 1.5rem;
+}
+
+.header-copy {
+  margin: 6px 0 0;
+  color: #94a3b8;
+}
+
+.contacts-panel {
+  margin-top: 18px;
+}
+
+.contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.contact-chip {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.72);
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.feedback {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #cbd5e1;
+}
+
+@media (max-width: 900px) {
+  .messenger-shell,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

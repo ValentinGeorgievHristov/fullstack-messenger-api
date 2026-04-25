@@ -1,0 +1,82 @@
+<section class="grid">
+  <app-user-form />
+
+  <section class="panel">
+    <p class="kicker">State Store</p>
+    <h2>Internal Chat</h2>
+
+    @if (store.users().length === 0) {
+      <p class="helper">Create a user to see signal state update here.</p>
+    } @else {
+      <div class="messenger-shell">
+        <aside class="user-list">
+          @for (user of store.users(); track user.id) {
+            <button
+              type="button"
+              class="user-card"
+              [class.active]="selectedUserId() === user.id"
+              (click)="selectUser(user.id)"
+            >
+              <div class="user-card-header">
+                <div class="user-card-copy">
+                  <strong>{{ user.name }}</strong>
+                  <span>{{ user.email }}</span>
+                  <small>User ID: {{ user.id }}</small>
+                  <small class="chat-summary">
+                    {{ getConversationCount(user.id) }} messages
+                  </small>
+                </div>
+                <span
+                  class="icon-button"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Delete user"
+                  (click)="deleteUser(user.id); $event.stopPropagation()"
+                  (keydown.enter)="deleteUser(user.id); $event.stopPropagation()"
+                >
+                  ðŸ—‘
+                </span>
+              </div>
+            </button>
+          }
+        </aside>
+
+        <section class="conversation-panel">
+          @if (selectedUser(); as user) {
+            <header class="conversation-header">
+              <div>
+                <h3>{{ user.name }}</h3>
+                <p>{{ user.email }}</p>
+                <small>User ID: {{ user.id }}</small>
+              </div>
+            </header>
+
+            @if (selectedConversation().length === 0) {
+              <p class="helper">No conversation yet for this user.</p>
+            } @else {
+              <div class="conversation-list">
+                @for (message of selectedConversation(); track message.id) {
+                  <article
+                    class="conversation-item"
+                    [class.sent]="message.senderUserId === user.id"
+                    [class.received]="message.receiverUserId === user.id"
+                  >
+                    <p class="message-direction">
+                      @if (message.senderUserId === user.id) {
+                        Sent to: {{ getUserLabel(message.receiverUserId) }}
+                      } @else {
+                        From: {{ getUserLabel(message.senderUserId) }}
+                      }
+                    </p>
+                    <strong>{{ message.title }}</strong>
+                    <p class="message-content">{{ message.content }}</p>
+                  </article>
+                }
+              </div>
+            }
+          }
+        </section>
+      </div>
+    }
+  </section>
+</section>

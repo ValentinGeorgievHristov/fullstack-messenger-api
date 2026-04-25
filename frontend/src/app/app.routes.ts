@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { authGuard, guestGuard } from './auth/auth.guard';
-import { MessagesPageComponent } from './pages/messages-page.component';
-import { AuthPageComponent } from './pages/auth-page.component';
-import { UsersPageComponent } from './pages/users-page.component';
+import { MessagesPageComponent } from './pages/messages-page/messages-page.component';
+import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
 
 export const routes: Routes = [
   {

@@ -122,10 +122,28 @@ export class AuthStore {
   }
 
   private getErrorMessage(error: HttpErrorResponse, fallbackMessage: string): string {
+    if (error.status === 0) {
+      return 'Cannot reach the backend. Check the API URL, CORS settings, and Render deployment status.';
+    }
+
     const message = error.error?.message;
 
     if (typeof message === 'string' && message.trim()) {
       return message;
+    }
+
+    if (Array.isArray(message)) {
+      const firstMessage = message.find(
+        (entry): entry is string => typeof entry === 'string' && entry.trim().length > 0,
+      );
+
+      if (firstMessage) {
+        return firstMessage;
+      }
+    }
+
+    if (typeof error.error === 'string' && error.error.trim()) {
+      return error.error;
     }
 
     return fallbackMessage;
